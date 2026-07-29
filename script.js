@@ -695,3 +695,89 @@ function dispararEfeitoCarimboVisual() {
         el.classList.add('carimbo-efento-animado');
     }
 }
+
+/* ==========================================================
+   INICIALIZAÇÃO DAS PARTÍCULAS E CURSOR MÁGICO (JS)
+   ========================================================== */
+
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Cria o elemento de brilho do mouse
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    document.body.appendChild(glow);
+
+    document.addEventListener('mousemove', (e) => {
+        glow.style.left = `${e.clientX}px`;
+        glow.style.top = `${e.clientY}px`;
+    });
+
+    // 2. Cria o canvas de partículas de fundo multicoloridas
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    let particles = [];
+    const numParticles = 90; // Quantidade ideal para preencher sem pesar
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Paleta de cores arcanas mistas (Verdes, Dourados e Vermelhos)
+    const paletaCores = [
+        'rgba(27, 77, 62, 0.7)',   // Verde escuro Clave
+        'rgba(46, 139, 87, 0.6)',  // Verde esmeralda
+        'rgba(218, 165, 32, 0.7)', // Amarelo ouro
+        'rgba(238, 232, 170, 0.5)',// Amarelo pálido / faísca
+        'rgba(178, 34, 34, 0.6)',  // Vermelho rubi / brasa
+        'rgba(220, 20, 60, 0.5)'   // Vermelho vivo suave
+    ];
+
+    // Inicializa as partículas com variedade de tamanhos e velocidades
+    for (let i = 0; i < numParticles; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 1.2,
+            color: paletaCores[Math.floor(Math.random() * paletaCores.length)],
+            speedX: (Math.random() - 0.5) * 0.6,
+            speedY: -Math.random() * 0.9 - 0.3,
+            glowSize: Math.random() * 10 + 4
+        });
+    }
+
+    // Loop de animação contínua das partículas
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+
+            // Recicla a partícula quando sai pelo topo
+            if (p.y < -10) {
+                p.y = canvas.height + 10;
+                p.x = Math.random() * canvas.width;
+            }
+            // Loop pelas laterais da tela
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.shadowBlur = p.glowSize;
+            ctx.shadowColor = p.color; // Brilho de acordo com a cor da partícula
+            ctx.fill();
+            ctx.closePath();
+        });
+
+        requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+});
