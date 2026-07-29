@@ -34,6 +34,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
 }
 
 /* Container Principal do Dossiê - Centralizado e com Fundo Fosco Escuro */
@@ -47,6 +48,7 @@ body {
     position: relative;
     border-radius: 6px;
     margin: 0 auto;
+    z-index: 2; /* Garante que a ficha fique acima do canvas de partículas */
 }
 
 /* Cabeçalho do Documento (Centralizado) */
@@ -296,3 +298,32 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================================
+   EFEITOS MÁGICOS: CURSOR GLOW E PARTÍCULAS MULTICOLORIDAS
+   ========================================================== */
+
+/* Efeito de Cursor com Brilho Esverdeado/Místico */
+.cursor-glow {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(27, 77, 62, 0.25) 0%, rgba(27, 77, 62, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: width 0.2s, height 0.2s;
+}
+
+/* Container de Partículas de Fundo (Verdes, Douradas e Vermelhas) */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1; /* Mantém estritamente no fundo da página */
+}
+
