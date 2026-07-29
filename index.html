@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clave — Registro Inquisitorial</title>
+    
+    <!-- Bibliotecas externas -->
+    <script src="https://cdn.jsdelivr.net/npm/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Seu CSS separado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Botão discreto no topo para Carregar Dossiê (.json) -->
+<div style="position: absolute; top: 15px; right: 20px; z-index: 100;">
+    <button onclick="document.getElementById('import-file-input').click()" title="Carregar Dossiê (.json)" style="background: #2a1810; border: 1px solid #8c6747; color: #f2e3c6; padding: 6px 12px; border-radius: 4px; font-family: 'Georgia', serif; font-size: 8.5pt; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.4);">
+        Carregar Dossiê
+    </button>
+</div>
+
+<div class="container" style="position: relative;">
+    <div class="clave-header">
+        <span class="clave-seal">TRIBUNAL DE CONTROLE ARCANO</span>
+        <h1>Clave</h1>
+        <p class="clave-lema">"Não deve existir magia fora da Clave"</p>
+    </div>
+
+    <div class="avatar-container">
+        <label style="margin-bottom: 12px;">Retrato do Registrando</label>
+        <img id="avatar-preview" src="" alt="Retrato">
+        <label class="custom-file-upload">
+            <input type="file" id="avatar-input" accept="image/*" onchange="loadAvatar(event)">
+            Afixar Retrato
+        </label>
+    </div>
+
+    <!-- 1. Identidade e Origem -->
+    <div class="section">
+        <span class="section-label">Identidade e Origem</span>
+        <div class="grid">
+            <div class="field"><label>Nome</label><input type="text" id="Nome" placeholder="Ex: Cícero"></div>
+            <div class="field"><label>Sobrenome</label><input type="text" id="Sobrenome" placeholder="Ex: Vane"></div>
+            <div class="field"><label>Pronúncia</label><input type="text" id="Pronuncia" placeholder="Ex: Sí-ce-ro"></div>
+            <div class="field"><label>Idade</label><input type="text" id="Idade" placeholder="Ex: 34"></div>
+            <div class="field">
+                <label>Signo</label>
+                <select id="Signo">
+                    <option value="">Selecione...</option>
+                    <option value="Áries">Áries</option>
+                    <option value="Touro">Touro</option>
+                    <option value="Gêmeos">Gêmeos</option>
+                    <option value="Câncer">Câncer</option>
+                    <option value="Leão">Leão</option>
+                    <option value="Virgem">Virgem</option>
+                    <option value="Libra">Libra</option>
+                    <option value="Escorpião">Escorpião</option>
+                    <option value="Sagitário">Sagitário</option>
+                    <option value="Capricórnio">Capricórnio</option>
+                    <option value="Aquário">Aquário</option>
+                    <option value="Peixes">Peixes</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Traços Físicos e Marcas -->
+    <div class="section">
+        <span class="section-label">Traços Físicos e Marcas</span>
+        <div class="grid">
+            <div class="field"><label>Altura</label><input type="text" id="Altura" placeholder="Ex: 1.82m"></div>
+            <div class="field"><label>Gênero</label><input type="text" id="Genero" placeholder="Ex: Masculino"></div>
+            <div class="field">
+                <label>Raça</label>
+                <select id="Raca">
+                    <option value="">Selecione...</option>
+                    <option value="Humano">Humano</option>
+                    <option value="Elfo Noturno>Elfo Noturno</option>
+                    <option value="Elfo Cinzento">Elfo Cinzento</option>
+                    <option value="Nørder">Nørder</option>
+                    <option value="Centauros">Centauro</option>
+                    <option value="Gedemand">Gedemand</option>
+                    <option value="Sereias">Sereia</option>
+                    <option value="Fadas">Fada</option>
+                    <option value="Tauren">Tauren</option>
+                    <option value="Arcanjo">Arcanjo</option>
+                    <option value="Troll">Troll</option>
+                    <option value="Fartil">Fartil</option>
+                    <option value="Pandarino">Pandarino</option>
+                    <option value="Morto-Vivo">Morto-Vivo</option>
+                </select>
+            </div>
+            <div class="field"><label>Olhos</label><input type="text" id="Olhos" placeholder="Ex: Castanhos"></div>
+            <div class="field"><label>Cabelo</label><input type="text" id="Cabelo" placeholder="Ex: Grisalho"></div>
+            <div class="field"><label>Pele</label><input type="text" id="Pele" placeholder="Ex: Pálida"></div>
+            <div class="field full"><label>Marcas</label><input type="text" id="Marcas" placeholder="Cicatrizes, estigmas ou selos de contenção..."></div>
+        </div>
+    </div>
+
+    <!-- 3. Psique e Desvios -->
+    <div class="section">
+        <span class="section-label">Psique e Desvios</span>
+        <div class="grid">
+            <div class="field full"><label>Medos</label><textarea id="Medos" placeholder="Fraquezas catalogadas para coerção..."></textarea></div>
+            <div class="field full"><label>Ambições</label><textarea id="Ambicoes" placeholder="Desejos sob estrita vigilância inquisitorial..."></textarea></div>
+            <div class="field full"><label>Gostos</label><textarea id="Gostos" placeholder="Preferências toleradas..."></textarea></div>
+            <div class="field full"><label>Desgostos</label><textarea id="Desgostos" placeholder="Aversões perigosas..."></textarea></div>
+            <div class="field full"><label>Hobbies</label><input type="text" id="Hobbies" placeholder="Passatempo vigiado"></div>
+        </div>
+    </div>
+
+    <!-- 4. Perícias -->
+    <div class="section">
+        <span class="section-label">Perícias e Especialidades de Verden Af (Até 3)</span>
+        <div class="grid">
+            <div class="field">
+                <label>Perícia I</label>
+                <select id="Pericia1" onchange="atualizarSistemaPericias()">
+                    <option value="">-- Selecione uma Perícia --</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Perícia II</label>
+                <select id="Pericia2" onchange="atualizarSistemaPericias()">
+                    <option value="">-- Selecione uma Perícia --</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Perícia III</label>
+                <select id="Pericia3" onchange="atualizarSistemaPericias()">
+                    <option value="">-- Selecione uma Perícia --</option>
+                </select>
+            </div>
+            <div class="field full">
+                <div id="pericias-feedback" class="pericia-info-box" style="background-color: #f4ecdf; border: 1px dashed #5c3a21; padding: 10px; border-radius: 4px; font-size: 9.5pt; color: #3b2515;">
+                    Nenhuma perícia selecionada. Escolha até 3 especialidades para calcular a sinergia de Habilidade-Chave.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Estatuto e Linhagem -->
+    <div class="section">
+        <span class="section-label">Estatuto e Linhagem</span>
+        <div class="grid">
+            <div class="field">
+                <label>Classe</label>
+                <select id="Classe" onchange="atualizarSubclasses()">
+                    <option value="">Selecione a classe primeiro...</option>
+                    <option value="Assassino">Assassino</option>
+                    <option value="Bardo">Bardo</option>
+                    <option value="Bruxo">Bruxo</option>
+                    <option value="Cartomante">Cartomante</option>
+                    <option value="Caçador">Caçador</option>
+                    <option value="Druida">Druida</option>
+                    <option value="Feiticeiro">Feiticeiro</option>
+                    <option value="Forfatter">Forfatter</option>
+                    <option value="Golemante">Golemante</option>
+                    <option value="Ladino">Ladino</option>
+                    <option value="Paladino">Paladino</option>
+                    <option value="Pirata">Pirata</option>
+                    <option value="Monge">Monge</option>
+                    <option value="Xamã">Xamã</option>
+                    <option value="Mago">Mago</option>
+                    <option value="Guerreiro">Guerreiro</option>
+                    <option value="Sacerdote">Sacerdote</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Subclasse</label>
+                <select id="Subclasse" disabled>
+                    <option value="">Selecione uma classe primeiro</option>
+                </select>
+            </div>
+
+            <div class="field"><label>Facção</label><input type="text" id="Faccao" placeholder="Ex: Servil à Clave"></div>
+            <div class="field"><label>Árvore Genealógica</label><input type="text" id="Arvore" placeholder="Rastreio de sangue arcano"></div>
+        </div>
+    </div>
+
+    <!-- 6. Registros Suplementares -->
+    <div class="section">
+        <span class="section-label">Registros Suplementares</span>
+        <div class="grid">
+            <div class="field"><label>Estado Civil</label><input type="text" id="EstadoCivil" placeholder="Ex: Sozinho"></div>
+            <div class="field"><label>Orientação Sexual</label><input type="text" id="Orientacao" placeholder="Ex: Indiferente"></div>
+            <div class="field"><label>Apelido</label><input type="text" id="Apelido" placeholder="Alcunha nos registros"></div>
+            <div class="field"><label>Título</label><input type="text" id="Titulo" placeholder="Grau perante a Clave"></div>
+        </div>
+    </div>
+
+    <!-- 7. Controle Inquisitorial -->
+    <details class="inquisitorial-drawer">
+        <summary>Controle Inquisitorial (Status do Registro)</summary>
+        <div class="drawer-content">
+            <div class="grid">
+                <div class="field full">
+                    <label>Status do Registro</label>
+                    <select id="StatusInquisitorial" onchange="atualizarCarimboVisual()">
+                        <option value="VIGIADO">Sob Vigilância (Padrão)</option>
+                        <option value="CLASSIFICADO">Classificado / Aprovado</option>
+                        <option value="SUSPEITO">Sob Suspeita de Heresia</option>
+                        <option value="EXPURGADO">Expurgado / Condenado</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Campos ocultos internos para manter compatibilidade com exportações, scripts e JSON -->
+    <div style="display: none;">
+        <select id="InquisidorAssinatura"></select>
+        <input type="text" id="DataInquisitorial">
+    </div>
+
+    <!-- MENU FLUTUANTE DE EXPORTAÇÃO -->
+    <div class="export-float-menu" style="position: fixed; bottom: 25px; right: 25px; z-index: 999;">
+        <button id="main-export-btn" onclick="toggleExportMenu()" style="background-color: #2a1810; color: #f2e3c6; border: 2px solid #8c6747; padding: 12px 24px; border-radius: 4px; font-family: 'Georgia', serif; font-weight: bold; letter-spacing: 1px; cursor: pointer; box-shadow: 0 6px 16px rgba(0,0,0,0.5); transition: all 0.3s;">
+            EXPORTAR DOSSIÊ
+        </button>
+        
+        <div id="export-options-popup" style="display: none; position: absolute; bottom: 55px; right: 0; background-color: #2a1810; border: 2px solid #8c6747; border-radius: 4px; padding: 8px; width: 230px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); flex-direction: column; gap: 6px;">
+            <span style="font-size: 7.5pt; font-family: 'Georgia', serif; text-align: center; color: #b59273; border-bottom: 1px solid #4a2d1d; padding-bottom: 4px; font-weight: bold; letter-spacing: 1px;">PAINEL DO TRIBUNAL</span>
+            <button onclick="doExport('png')" style="background: #3b2318; color: #f2e3c6; border: 1px solid #6b4731; padding: 9px; text-align: left; border-radius: 3px; cursor: pointer; font-family: 'Georgia', serif; font-size: 9pt; transition: background 0.2s;">Selar como Imagem (PNG)</button>
+            <button onclick="doExport('pdf')" style="background: #3b2318; color: #f2e3c6; border: 1px solid #6b4731; padding: 9px; text-align: left; border-radius: 3px; cursor: pointer; font-family: 'Georgia', serif; font-size: 9pt; transition: background 0.2s;">Arquivar como PDF</button>
+            <button onclick="doExport('docx')" style="background: #3b2318; color: #f2e3c6; border: 1px solid #6b4731; padding: 9px; text-align: left; border-radius: 3px; cursor: pointer; font-family: 'Georgia', serif; font-size: 9pt; transition: background 0.2s;">Pergaminho Digital (Word)</button>
+            <button onclick="exportarDossieJSON()" style="background: #3b2318; color: #f2e3c6; border: 1px solid #6b4731; padding: 9px; text-align: left; border-radius: 3px; cursor: pointer; font-family: 'Georgia', serif; font-size: 9pt; transition: background 0.2s;">Salvar Dados (.json)</button>
+            <button onclick="clearData()" style="background: #5a1111; color: #ffd6d6; border: 1px solid #8b2222; padding: 9px; text-align: center; border-radius: 3px; cursor: pointer; font-family: 'Georgia', serif; font-size: 9pt; font-weight: bold; margin-top: 4px;">Expurgar Registro</button>
+        </div>
+    </div>
+</div>
+
+<div id="export-area"></div>
+
+<!-- Input oculto para importação de JSON -->
+<input type="file" id="import-file-input" class="file-input-hidden" accept=".json" onchange="importarDossie(event)">
+
+<!-- ANIMAÇÃO DE CARIMBO (OVERLAY INQUISITORIAL) -->
+<div id="stamp-animation-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,5,3,0.75); z-index: 9999; justify-content: center; align-items: center;">
+    <div id="flying-stamp" style="border: 6px solid #8b0000; color: #8b0000; font-family: 'Georgia', serif; font-size: 30pt; font-weight: bold; text-transform: uppercase; padding: 24px 48px; letter-spacing: 6px; border-radius: 6px; background-color: rgba(139, 0, 0, 0.08); box-shadow: 0 0 40px rgba(139,0,0,0.5); transform: scale(3.5) rotate(-12deg); opacity: 0; transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        [SELADO]
+    </div>
+</div>
+
+<!-- Seu JavaScript separado -->
+<script src="script.js"></script>
+
+<script>
+    // Controle do menu flutuante de exportação
+    function toggleExportMenu() {
+        const popup = document.getElementById('export-options-popup');
+        popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Fecha o menu ao clicar fora
+    window.addEventListener('click', (e) => {
+        const menu = document.querySelector('.export-float-menu');
+        const popup = document.getElementById('export-options-popup');
+        if (menu && !menu.contains(e.target) && popup) {
+            popup.style.display = 'none';
+        }
+    });
+
+    // Função de animação do carimbo inquisitorial
+    function animarCarimbo(texto = "SELADO", callback) {
+        const overlay = document.getElementById('stamp-animation-overlay');
+        const stamp = document.getElementById('flying-stamp');
+        stamp.textContent = `[${texto}]`;
+        overlay.style.display = 'flex';
+        
+        // Efeito de batida do carimbo
+        setTimeout(() => {
+            stamp.style.transform = 'scale(1) rotate(-4deg)';
+            stamp.style.opacity = '1';
+        }, 50);
+
+        // Some e prossegue para a exportação real
+        setTimeout(() => {
+            stamp.style.transform = 'scale(2.5) rotate(6deg)';
+            stamp.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                stamp.style.transform = 'scale(3.5) rotate(-12deg)'; // reseta
+                if (callback) callback();
+            }, 250);
+        }, 1100);
+    }
+
+    // Catálogo oficial de perícias
+    const catalogoPericias = {
+        "Agilidade": "Destreza",
+        "Lábia": "Carisma",
+        "Intuição": "Sabedoria",
+        "Intimidação": "Carisma",
+        "Iniciativa": "Destreza",
+        "Disfarce": "Carisma",
+        "Sensibilidade à Magia": "Sabedoria",
+        "Furtividade": "Destreza",
+        "Percepção": "Sabedoria",
+        "Sobrevivência": "Destreza",
+        "Observação": "Carisma",
+        "Raciocínio Rápido": "Sabedoria"
+    };
+
+    // Lista de Inquisidores / Clavianos para seleção randômica automática
+    const listaInquisidores = [
+        "Valerius Voss",
+        "Cícero Vane",
+        "Thaddeus Thorne",
+        "Morana Cross",
+        "Alistair Vance",
+        "Hecate Sterling",
+        "Liah McClair",
+        "Vespera Nyx",
+        "Thoren Kael",
+        "Canaaris Thtfoon",
+        "Efraim Blackwood",
+        "Kaelen Vost"
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // Preencher perícias
+        ['Pericia1', 'Pericia2', 'Pericia3'].forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                for (let pericia in catalogoPericias) {
+                    const opt = document.createElement('option');
+                    opt.value = pericia;
+                    opt.textContent = `${pericia} (${catalogoPericias[pericia]})`;
+                    select.appendChild(opt);
+                }
+            }
+        });
+
+        // Preencher Inquisidor Responsável aleatoriamente e definir data fixa 560 DGA nos campos ocultos
+        const inquisidorSelect = document.getElementById('InquisidorAssinatura');
+        if (inquisidorSelect) {
+            inquisidorSelect.innerHTML = '';
+            listaInquisidores.forEach(nome => {
+                const opt = document.createElement('option');
+                opt.value = nome;
+                opt.textContent = nome;
+                inquisidorSelect.appendChild(opt);
+            });
+            // Escolhe aleatoriamente um inquisidor
+            const randomIndex = Math.floor(Math.random() * listaInquisidores.length);
+            inquisidorSelect.selectedIndex = randomIndex;
+        }
+
+        const dataInput = document.getElementById('DataInquisitorial');
+        if (dataInput) {
+            dataInput.value = "560 DGA";
+        }
+    });
+</script>
+
+</body>
+</html>

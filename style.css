@@ -1,0 +1,298 @@
+/* ==========================================================
+   TEMA MEDIEVAL — ORGANIZAÇÃO CLAVE (ESTILO PERGAMINHO ESCURO)
+   ========================================================== */
+
+:root {
+    --cor-fundo-profundo: #0d0907;
+    --cor-fundo-gradiente: #1f1712;
+    --cor-pergaminho: #16110e;
+    --cor-pergaminho-claro: #221a14;
+    --cor-borda: #8c6747;
+    --cor-borda-clara: #4a3523;
+    --cor-texto: #e6dfd3;
+    --cor-texto-suave: #b5a895;
+    --cor-destaque: #a6320d;
+    --cor-destaque-hover: #c94014;
+    --cor-cabecalho-tabela: #2d221a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--cor-fundo-profundo);
+    color: var(--cor-texto);
+    font-family: 'Georgia', serif;
+    background-image: 
+        radial-gradient(circle at center, rgba(61, 44, 33, 0.4) 0%, rgba(13, 9, 7, 0.95) 85%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container Principal do Dossiê - Centralizado e com Fundo Fosco Escuro */
+.container {
+    width: 100%;
+    max-width: 760px;
+    background-color: var(--cor-pergaminho);
+    border: 5px double var(--cor-borda);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85), inset 0 0 60px rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    position: relative;
+    border-radius: 6px;
+    margin: 0 auto;
+}
+
+/* Cabeçalho do Documento (Centralizado) */
+.clave-header {
+    text-align: center;
+    border-bottom: 2px solid var(--cor-borda);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.clave-seal {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--cor-borda);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.clave-header h1 {
+    font-size: 18pt;
+    color: var(--cor-texto);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.clave-lema {
+    font-size: 9.5pt;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+}
+
+/* Seções e Blocos do Formulário */
+.section {
+    margin-bottom: 25px;
+    background-color: var(--cor-pergaminho-claro);
+    border: 1px solid var(--cor-borda-clara);
+    padding: 20px;
+    border-radius: 3px;
+    position: relative;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.section-label {
+    display: block;
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    color: var(--cor-borda);
+    border-bottom: 1px solid var(--cor-borda-clara);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Grid de Campos */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    font-size: 8pt;
+    font-weight: bold;
+    color: var(--cor-texto-suave);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.field input,
+.field select,
+.field textarea {
+    font-family: 'Georgia', serif;
+    font-size: 9.5pt;
+    padding: 10px 12px;
+    background-color: #110d0b;
+    border: 1px solid var(--cor-borda-clara);
+    color: var(--cor-texto);
+    border-radius: 2px;
+    outline: none;
+    width: 100%;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: var(--cor-borda);
+    background-color: #16110e;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 5px rgba(140, 103, 71, 0.4);
+}
+
+/* Avatar do Registrando */
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 25px;
+    background-color: var(--cor-pergaminho-claro);
+    border: 1px solid var(--cor-borda-clara);
+    padding: 20px;
+    border-radius: 3px;
+}
+
+#avatar-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid var(--cor-borda);
+    background-color: #110d0b;
+    display: none;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.custom-file-upload {
+    font-family: 'Georgia', serif;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 8px 16px;
+    background-color: var(--cor-borda);
+    color: #e6dfd3;
+    border: 1px solid #573f2a;
+    cursor: pointer;
+    border-radius: 2px;
+    display: inline-block;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.custom-file-upload:hover {
+    background-color: var(--cor-destaque);
+}
+
+.custom-file-upload input[type="file"],
+.file-input-hidden {
+    display: none;
+}
+
+/* Feedback de Perícias e Sinergia */
+.pericia-info-box {
+    margin-top: 8px;
+    line-height: 1.5;
+    color: var(--cor-texto-suave);
+    font-size: 9pt;
+}
+
+/* Gaveteiro Inquisitorial (Details / Summary) */
+.inquisitorial-drawer {
+    margin-bottom: 25px;
+    background-color: var(--cor-pergaminho-claro);
+    border: 1px solid var(--cor-borda);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.inquisitorial-drawer summary {
+    font-size: 9.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--cor-texto);
+    padding: 14px 18px;
+    cursor: pointer;
+    background-color: var(--cor-cabecalho-tabela);
+    letter-spacing: 1px;
+    outline: none;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.inquisitorial-drawer summary:hover {
+    background-color: #3b2d24;
+}
+
+.drawer-content {
+    padding: 20px;
+    border-top: 1px solid var(--cor-borda-clara);
+}
+
+/* ==========================================================
+   ÁREA DE EXPORTAÇÃO (CORREÇÃO SEGURA PARA HTML2CANVAS / PDF)
+   ========================================================== */
+#export-area {
+    display: none;
+    background-color: #16110e !important;
+    color: #e6dfd3 !important;
+    padding: 40px !important;
+    width: 800px !important;
+    font-family: 'Georgia', serif !important;
+}
+
+.table-exp {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 15px !important;
+    font-size: 9pt !important;
+    background-color: #16110e !important;
+    color: #e6dfd3 !important;
+}
+
+.table-exp td, 
+.table-exp th {
+    padding: 8px 12px !important;
+    border: 1px solid #4a3523 !important;
+    background-color: #221a14 !important;
+    color: #e6dfd3 !important;
+}
+
+.header-exp {
+    background-color: #2d221a !important;
+    font-weight: bold !important;
+    color: #8c6747 !important;
+    text-transform: uppercase !important;
+    font-size: 8.5pt !important;
+    letter-spacing: 1px !important;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
